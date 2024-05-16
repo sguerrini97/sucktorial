@@ -1,7 +1,10 @@
+from datetime import datetime
+from config import Config
+from argparse import ArgumentParser, ArgumentTypeError
+
 class SucktorialCliHelper:
     @staticmethod
     def get_args_parser():
-        from argparse import ArgumentParser
 
         parser = ArgumentParser(description="Sucktorial CLI")
 
@@ -38,13 +41,17 @@ class SucktorialCliHelper:
         )
         action_group.add_argument(
             "--clock-in",
-            action="store_true",
-            help="Clock in",
+            type=SucktorialCliHelper.datetime_parser,
+            const='',
+            nargs='?',
+            help="Clock in. Default: now, otherwise you can specify the date in the following format: YYYY-MM-DDTHH:mm:ss (24H format)",
         )
         action_group.add_argument(
             "--clock-out",
-            action="store_true",
-            help="Clock out",
+            type=SucktorialCliHelper.datetime_parser,
+            const='',
+            nargs= '?',
+            help="Clock out. Default: now, otherwise you can specify the date in the following format: YYYY-MM-DDTHH:mm:ss (24H format)",
         )
         action_group.add_argument(
             "--clocked-in",
@@ -121,8 +128,8 @@ class SucktorialCliHelper:
 
         if (
             int(args.logout)
-            + int(args.clock_in)
-            + int(args.clock_out)
+            + (1 if args.clock_in else 0)
+            + (1 if args.clock_out else 0)
             + int(args.clocked_in)
             + int(args.shifts)
             + int(args.leaves)
@@ -137,3 +144,13 @@ class SucktorialCliHelper:
         args, _ = parser.parse_known_args()
         SucktorialCliHelper.validate_args(args, parser)
         return args
+
+    @staticmethod
+    def datetime_parser(value: str):
+        if value == '':
+            return datetime.now()
+        else:
+            try:
+                return datetime.strptime(value, Config.DATETIME_FORMAT)
+            except ValueError:
+                raise ArgumentTypeError(f"Invalid date format: {value}. Expected format: YYYY-MM-DDTHH:mm:ss")

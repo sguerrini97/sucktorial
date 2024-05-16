@@ -11,6 +11,7 @@ class Config:
     PERIODS_URL = f"{BASE_URL}/attendance/periods"
     SESSION_URL = f"{BASE_URL}/sessions"
     SHIFTS_URL = f"{BASE_URL}/attendance/shifts"
+    DATETIME_FORMAT = "%Y-%m-%dT%H:%M:%S"
 
     def __init__(
         self,

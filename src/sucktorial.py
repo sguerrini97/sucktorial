@@ -3,7 +3,7 @@ import hashlib
 import logging
 import os
 import pickle
-from datetime import datetime
+from datetime import datetime, time, date
 from pprint import pformat
 from typing import Optional
 
@@ -313,6 +313,27 @@ class Sucktorial:
             hooks=self.__hook_factory("Failed to update shift", {200}),
         )
         self.logger.info(f"Successfully updated shift {shift_id}")
+
+    def insert_shift(
+        self,
+        clock_in_time: time,
+        clock_out_time: time,
+        date: date
+    ) -> dict:
+
+        payload = {
+            "clock_in": clock_in_time.strftime("%H:%M"),
+            "clock_out": clock_out_time.strftime("%H:%M"),
+            "date": date.strftime("%Y-%m-%d"),
+            "day": date.day
+        }
+        response = self.session.post(
+            url=self.config.SHIFTS_URL,
+            data=payload,
+            hooks=self.__hook_factory("Failed to insert shift", {201})
+        )
+
+        return response.json()
 
     def delete_shift(self, shift_id: int):
         """Delete a shift.
