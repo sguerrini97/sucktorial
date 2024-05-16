@@ -19,6 +19,7 @@ class Config:
         employee_id: Optional[int] = None,
         user_agent: Optional[str] = None,
         envfile: Optional[str] = None,
+        debug: Optional[bool] = False,
         **kwargs,
     ):
         self.env = dotenv_values()
@@ -47,6 +48,9 @@ class Config:
         if employee_id:
             self.env["EMPLOYEE_ID"] = employee_id
 
+        # Set debug mode
+        self.env["DEBUG"] = debug
+        
         self.LOGIN_URL = f"{self.BASE_URL}/{self.env.get('LANG')}/users/sign_in"
     
     def get(self, key: str, default: str = None) -> Optional[str]:
