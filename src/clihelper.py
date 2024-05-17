@@ -74,6 +74,26 @@ class SucktorialCliHelper:
             type=str,
             help="Execute a GraphQL query",
         )
+        action_group.add_argument(
+            "--insert-shift",
+            action="store_true",
+            help="Insert a new shift"
+        )
+        action_group.add_argument(
+            "--start-shift",
+            type=str,
+            help="Specify the start of the shift to be inserted in the format HH:MM"
+        )
+        action_group.add_argument(
+            "--end-shift",
+            type=str,
+            help="Specify the end of the shift to be inserted in the format HH:MM"
+        )
+        action_group.add_argument(
+            "--date-shift",
+            type=str,
+            help="Specify the date of the shift to be inserted in the format YYYY-MM-DD"
+        )
 
         customization_group = parser.add_argument_group("Customization")
         customization_group.add_argument(
@@ -109,6 +129,9 @@ class SucktorialCliHelper:
         if args.random_clock and not (args.clock_in or args.clock_out):
             parser.error("Specify --clock-in or --clock-out with --random-clock")
 
+        if args.insert_shift and not args.start_shift and not args.end_shift and not args.date_shift:
+            parser.error("You must specify --start-shift, --end-shift and --date-shift")
+
         if not (
             args.login
             or args.logout
@@ -119,6 +142,7 @@ class SucktorialCliHelper:
             or args.leaves
             or args.employee_data
             or args.graphql_query
+            or args.insert_shift
         ):
             parser.error("Specify at least one action")
 
@@ -130,6 +154,7 @@ class SucktorialCliHelper:
             + int(args.shifts)
             + int(args.leaves)
             + int(args.employee_data)
+            + int(args.insert_shift)
             + (1 if args.graphql_query else 0)
         ) > 1:
             parser.error("Specify only one action")
