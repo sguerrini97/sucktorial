@@ -23,13 +23,13 @@ if __name__ == "__main__":
         sucktorial.logout()
     elif args.clock_in:
         sucktorial.clock_in(
-            args.clock_in + timedelta(minutes=randint(-args.random_clock, args.random_clock))
+            datetime.now() + timedelta(minutes=randint(-args.random_clock, args.random_clock))
             if args.random_clock is not None
             else None
         )
     elif args.clock_out:
         sucktorial.clock_out(
-            args.clock_out + timedelta(minutes=randint(-args.random_clock, args.random_clock))
+            datetime.now() + timedelta(minutes=randint(-args.random_clock, args.random_clock))
             if args.random_clock is not None
             else None
         )

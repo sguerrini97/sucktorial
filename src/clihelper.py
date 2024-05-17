@@ -41,17 +41,13 @@ class SucktorialCliHelper:
         )
         action_group.add_argument(
             "--clock-in",
-            type=SucktorialCliHelper.datetime_parser,
-            const='',
-            nargs='?',
-            help="Clock in. Default: now, otherwise you can specify the date in the following format: YYYY-MM-DDTHH:mm:ss (24H format)",
+            action="store_true",
+            help="Clock in",
         )
         action_group.add_argument(
             "--clock-out",
-            type=SucktorialCliHelper.datetime_parser,
-            const='',
-            nargs= '?',
-            help="Clock out. Default: now, otherwise you can specify the date in the following format: YYYY-MM-DDTHH:mm:ss (24H format)",
+            action="store_true",
+            help="Clock out",
         )
         action_group.add_argument(
             "--clocked-in",
@@ -128,8 +124,8 @@ class SucktorialCliHelper:
 
         if (
             int(args.logout)
-            + (1 if args.clock_in else 0)
-            + (1 if args.clock_out else 0)
+            + int(args.clock_in)
+            + int(args.clock_out)
             + int(args.clocked_in)
             + int(args.shifts)
             + int(args.leaves)
