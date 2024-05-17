@@ -43,3 +43,13 @@ if __name__ == "__main__":
         pprint(sucktorial.get_employee_data())
     elif args.graphql_query:
         print(json.dumps(sucktorial.graphql_query(operationName="query", query = args.graphql_query)))
+    elif args.insert_shift:
+        start_shift = datetime.strptime(args.start_shift, "%M:%S").time()
+        end_shift = datetime.strptime(args.end_shift, "%M:%S").time()
+        date_shift = datetime.strptime(args.date_shift, "%Y-%m-%d").date()
+        # TODO passare period id, da capire come ottenerlo
+        sucktorial.insert_shift(
+            start_shift,
+            end_shift,
+            date_shift,
+        )

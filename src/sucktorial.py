@@ -316,16 +316,17 @@ class Sucktorial:
 
     def insert_shift(
         self,
-        clock_in_time: time,
-        clock_out_time: time,
-        date: date
+        start_shift: time,
+        end_shift: time,
+        date_shift: date,
+        period_id: int
     ) -> dict:
 
         payload = {
-            "clock_in": clock_in_time.strftime("%H:%M"),
-            "clock_out": clock_out_time.strftime("%H:%M"),
-            "date": date.strftime("%Y-%m-%d"),
-            "day": date.day
+            "clock_in": start_shift.strftime("%H:%M"),
+            "clock_out": end_shift.strftime("%H:%M"),
+            "date": date_shift.strftime("%Y-%m-%d"),
+            "day": date_shift.day
         }
         response = self.session.post(
             url=self.config.SHIFTS_URL,
